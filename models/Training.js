@@ -8,4 +8,4 @@ const TrainingSchema= new Schema({
     exercises:{type:Array,required:false}
 })
 
-module.export = mongoose.model('Training',TrainingSchema)
+module.exports = mongoose.model('Training',TrainingSchema)

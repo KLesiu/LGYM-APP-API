@@ -11,4 +11,4 @@ const ExerciseSchema = new Schema({
     series:{type:Number,required:false}
 })
 
-module.export = mongoose.model('Exercise',ExerciseSchema)
+module.exports = mongoose.model('Exercise',ExerciseSchema)
