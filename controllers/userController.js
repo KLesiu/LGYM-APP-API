@@ -76,3 +76,10 @@ exports.setUserRecords = async function(req,res,next){
     await User.findByIdAndUpdate(id,{Bp:req.body.bp})
     return res.status(200).send({msg:'Updated'})
 }
+
+exports.setUserRank = async function(req,res,next){
+    const id = req.params.id
+    const rank = req.body.rank
+    await User.findByIdAndUpdate(id,{rank:rank})
+    return res.status(200).send({msg:'Updated'})
+}
