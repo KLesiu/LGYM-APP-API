@@ -61,3 +61,18 @@ exports.isAdmin = async function(req,res,next){
     const admin = await User.findById(req.body._id)
     return res.status(200).send(admin)
 }
+
+exports.getUserInfo = async function(req,res,next){
+    const id = req.params.id
+    const UserInfo = await User.findById(id)
+    if(UserInfo) return res.status(200).send(UserInfo)
+    return res.status(404).send("Didnt find")   
+}
+
+exports.setUserRecords = async function(req,res,next){
+    const id = req.body.id
+    await User.findByIdAndUpdate(id,{Sq:req.body.sq})
+    await User.findByIdAndUpdate(id,{Dl:req.body.dl})
+    await User.findByIdAndUpdate(id,{Bp:req.body.bp})
+    return res.status(200).send({msg:'Updated'})
+}
