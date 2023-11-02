@@ -4,6 +4,7 @@ const mongoose = require("mongoose")
 require("dotenv").config()
 const cors = require("cors")
 const auth = require("./routes/auth")
+const plan = require('./routes/plan')
 
 // Mongoose connection
 mongoose.set("strictQuery",false)
@@ -28,6 +29,7 @@ passport()
 
 // Routes
 app.use('/api',auth)
+app.use('/api',plan)
 
 
 // Start listening

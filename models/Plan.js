@@ -12,6 +12,7 @@ const PlanSchema = new Schema({
     planE:{type:Array,required:false},
     planF:{type:Array,required:false},
     planG:{type:Array,required:false},
+    trainingDays:{type:Number,required:true}
 
 
 })
