@@ -3,5 +3,7 @@ const planController = require("../controllers/planController")
 
 Router.post('/:id/configPlan',planController.setPlanConfig)
 Router.get('/:id/configPlan',planController.getPlanConfig)
+Router.post('/:id/setPlan',planController.setPlan)
+Router.get('/:id/getPlan',planController.getPlan)
 
 module.exports = Router
