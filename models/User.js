@@ -13,7 +13,8 @@ const UserSchema = new Schema({
     plan:{type:Schema.Types.ObjectId,ref:"Plan",required:false},
     Sq: {type:Number,required:false},
     Dl: {type:Number,required:false},
-    Bp: {type:Number,required:false}
+    Bp: {type:Number,required:false},
+    profielRank:{type:String,required:false}
 
 
 
