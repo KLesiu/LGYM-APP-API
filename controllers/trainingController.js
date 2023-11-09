@@ -2,7 +2,7 @@ const User = require("../models/User")
 const Training = require("../models/Training")
 require("dotenv").config()
 
-exports.addTraining=async(req,res,next)=>{
+exports.addTraining=async(req,res)=>{
     const id = req.params.id
     const findUser = await User.findById(id)
     const day = req.body.day
@@ -14,7 +14,7 @@ exports.addTraining=async(req,res,next)=>{
     else res.status(404).send({msg:'Error, We didnt add your training!'})
 }
 
-exports.getTrainingHistory=async(req,res,next)=>{
+exports.getTrainingHistory=async(req,res)=>{
     const id = req.params.id
     const findUser = await User.findById(id)
     if(findUser){
@@ -25,11 +25,21 @@ exports.getTrainingHistory=async(req,res,next)=>{
     else return res.status(404).send({msg:'Error, we dont find You in our database. Please logout and login one more time.'})
 }
 
-exports.getCurrentTrainingSession=async(req,res,next)=>{
+exports.getCurrentTrainingSession=async(req,res)=>{
     const id = req.params.id
     const findTraining = await Training.findById(id)
     if(findTraining){
         return res.status(200).send({training:findTraining})
     }
     else return res.status(404).send({msg:'We dont find your training session!, Please logout and login one more time'})
+}
+
+exports.getPreviousTrainingSession=async(req,res)=>{
+    const userId = req.params.id
+    const findUser = await User.findById(userId)
+    const trainingType = req.params.day
+    const prevSession = await Training.find({user:findUser,type:trainingType})
+    if(prevSession) return res.status(200).send({prevSession:prevSession[prevSession.length-1]})
+    return res.status(404).send({msg: 'Didnt find previous session training'})
+
 }
