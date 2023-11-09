@@ -14,7 +14,7 @@ const UserSchema = new Schema({
     Sq: {type:Number,required:false},
     Dl: {type:Number,required:false},
     Bp: {type:Number,required:false},
-    profielRank:{type:String,required:false}
+    profileRank:{type:String,required:false}
 
 
 
