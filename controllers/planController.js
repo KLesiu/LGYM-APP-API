@@ -78,3 +78,11 @@ exports.getPlan= async(req,res,next)=>{
     })
     else return res.status(404).send({data:'Didnt find'})
 }
+
+exports.deletePlan=async(req,res)=>{
+   const id = req.params.id
+   const findUser = await User.findById(id)
+   const deletedPlan = await Plan.findOneAndDelete({user:findUser})
+   if(deletedPlan) return res.status(200).send({msg: 'Deleted!'})
+   else return res.stauts(404).send({msg:'Didnt find!'})
+}
