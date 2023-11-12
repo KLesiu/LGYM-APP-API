@@ -57,10 +57,10 @@ exports.login = async function(req,res,next){
     return res.status(200).send({token:token,req:req.user})
 }
 
-exports.isAdmin = async function(req,res,next){
-    const admin = await User.findById(req.body._id)
-    return res.status(200).send(admin)
-}
+// exports.isAdmin = async function(req,res,next){
+//     const admin = await User.findById(req.body._id)
+//     return res.status(200).send(admin)
+// }
 
 exports.getUserInfo = async function(req,res,next){
     const id = req.params.id
