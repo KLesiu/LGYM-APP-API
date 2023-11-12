@@ -52,8 +52,6 @@ exports.checkPreviousTrainingSession=async(req,res)=>{
     const plan = findUser.plan
     const prevSessions = await Training.find({user:findUser,type:trainingType,plan:plan})
     const prevSession = prevSessions[prevSessions.length-1]
-    console.log(prevSession)
-    
     if(prevSession) return res.status(200).send({msg:'Yes'})
     else return res.status(404).send({msg:'No'})
 }
