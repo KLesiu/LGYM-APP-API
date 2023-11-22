@@ -21,7 +21,8 @@ exports.getTrainingHistory=async(req,res)=>{
     const findUser = await User.findById(id)
     if(findUser){
         const trainings = await Training.find({user:findUser})
-        if(trainings.length>0) return res.status(200).send({trainingHistory:trainings})
+        const reverseTraining = trainings.reverse()
+        if(trainings.length>0) return res.status(200).send({trainingHistory:reverseTraining})
         else return res.status(404).send({msg:'You dont have trainings!'})
     }
     else return res.status(404).send({msg:'Error, we dont find You in our database. Please logout and login one more time.'})
