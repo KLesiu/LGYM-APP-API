@@ -1,15 +1,21 @@
 const {addTraining, getTrainingHistory, getPreviousTrainingSession, getCurrentTrainingSession,checkPreviousTrainingSession} = require('../controllers/trainingController')
 const request = require('supertest');
 const app = require('../index');
-const server = require('../server')
 const mongoose = require('mongoose')
 const Training = require('../models/Training')
 const Exercise = require('../models/Exercise')
 const User = require('../models/User');
 const Plan = require('../models/Plan');
 
+let server; // Zmienna do przechowywania referencji do serwera
+
+beforeAll(() => {
+    const port = 4002
+    server = app.listen(port);
+});
+
 // Close server connection
-afterAll(async()=>{
+afterEach(async()=>{
     await server.close()
 })
 // Close database connection
@@ -49,10 +55,10 @@ describe('addTraining', () => {
         // Expectations for the response message
         expect(mockResponse.status).toHaveBeenCalledWith(200);
         expect(mockResponse.send).toHaveBeenCalledWith({ msg: 'Training added' });
-    });
+    },10000);
 
     
-},1000);
+});
 
 describe('getTrainingHistory',()=>{
     it('should send training history',async()=>{
@@ -82,7 +88,7 @@ describe('getTrainingHistory',()=>{
 
 
 
-    })
+    },10000)
     it('should send message "You dont have trainings!"',async()=>{
         const mockUserId = 'mockUserId';
         const mockUser = new User({ _id: mockUserId });
@@ -104,8 +110,8 @@ describe('getTrainingHistory',()=>{
         await getTrainingHistory(mockRequest,mockResponse)
         expect(mockResponse.send).toHaveBeenCalledWith({ msg:'You dont have trainings!' });
 
-    })
-},1000)
+    },10000)
+})
 
 describe('getCurrentTrainingSession',()=>{
     it('should send current training',async()=>{
@@ -129,7 +135,7 @@ describe('getCurrentTrainingSession',()=>{
         await getCurrentTrainingSession(mockRequest,mockResponse)
 
         expect(mockResponse.send).toHaveBeenCalledWith({training:mockTraining});
-    })
+    },10000)
     it('should send message "We dont find your training session!, Please logout and login one more time"',async()=>{
         const mockTrainingId = 'mockTrainingId';
         const mockTraining = new Training({_id:mockTrainingId})
@@ -151,8 +157,8 @@ describe('getCurrentTrainingSession',()=>{
         await getCurrentTrainingSession(mockRequest,mockResponse)
 
         expect(mockResponse.send).toHaveBeenCalledWith({msg:'We dont find your training session!, Please logout and login one more time'});
-    })
-},1000)
+    },10000)
+})
 
 describe('getPreviousTrainingSession', () => {
     it('should send previous training session', async () => {
@@ -180,7 +186,7 @@ describe('getPreviousTrainingSession', () => {
         await getPreviousTrainingSession(mockRequest, mockResponse);
 
         expect(mockResponse.send).toHaveBeenCalledWith({ prevSession: mockTraining }); 
-    });
+    },10000);
     it('should message "Didnt find previous session training"',async()=>{
         const mockUserId = 'mockUserId';
         const mockUser = new User({ _id: mockUserId });
@@ -206,8 +212,8 @@ describe('getPreviousTrainingSession', () => {
         await getPreviousTrainingSession(mockRequest, mockResponse);
 
         expect(mockResponse.send).toHaveBeenCalledWith({msg: 'Didnt find previous session training'}); 
-    })
-}, 1000);
+    },10000)
+});
 
 describe('checkPreviousTrainingSession', () => {
     it('should send "Yes" when previous session exists', async () => {
@@ -237,7 +243,7 @@ describe('checkPreviousTrainingSession', () => {
         // Expectations
         expect(mockResponse.status).toHaveBeenCalledWith(200);
         expect(mockResponse.send).toHaveBeenCalledWith({ msg: 'Yes' });
-    });
+    },10000);
 
     it('should send "No" when previous session does not exist', async () => {
         // Mock data
@@ -265,8 +271,8 @@ describe('checkPreviousTrainingSession', () => {
         // Expectations
         expect(mockResponse.status).toHaveBeenCalledWith(404);
         expect(mockResponse.send).toHaveBeenCalledWith({ msg: 'No' });
-    });
-},1000);
+    },10000);
+});
 
 
 

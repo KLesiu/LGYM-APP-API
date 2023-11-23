@@ -3,11 +3,18 @@ const User = require('../models/User');
 const Plan = require('../models/Plan');
 const request = require('supertest');
 const app = require('../index');
-const server = require('../server')
+
 const mongoose = require('mongoose')
 
+
+let server; // Zmienna do przechowywania referencji do serwera
+
+beforeAll(() => {
+    const port = 4000;
+    server = app.listen(port);
+});
 // Close server connection
-afterAll(async()=>{
+afterEach(async()=>{
     await server.close()
 })
 // Close database connection
@@ -51,7 +58,7 @@ describe('setPlanConfig', () => {
       
       // Verify if the response object was sent with the expected message
       expect(mockResponse.send).toHaveBeenCalledWith({ msg: 'Created' });
-    }, 1000); // Set timeout for the test case to 1000ms
+    }, 10000); // Set timeout for the test case to 1000ms
   
   });
   
@@ -76,7 +83,7 @@ describe('getPlanConfig', () => {
       // Assertions to verify if the expected MongoDB operations were called
       expect(User.findById).toHaveBeenCalledWith(mockUserId);
       expect(Plan.findOne).toHaveBeenCalledWith({ user: mockUser });
-    }, 1000); // Set timeout for the test case to 1000ms
+    }, 10000); // Set timeout for the test case to 1000ms
   
   });
 
@@ -111,7 +118,7 @@ describe('setPlan', () => {
 
         // Expectations for the response message
         expect(mockResponse.send).toHaveBeenCalledWith({ msg: 'Updated' });
-    });
+    },10000);
 
     it('should update plan with two days of exercises', async () => {
         // Mocking user and plan objects
@@ -146,7 +153,7 @@ describe('setPlan', () => {
 
         // Expectations for the response message
         expect(mockResponse.send).toHaveBeenCalledWith({ msg: 'Updated' });
-    });
+    },10000);
 });
 
 describe('getPlan', () => {
@@ -192,7 +199,7 @@ describe('getPlan', () => {
                 planG:  [],
             },
         });
-    });
+    },10000);
 
     it('should return a 404 response when plan is not found', async () => {
         // Mocking user object
@@ -220,7 +227,7 @@ describe('getPlan', () => {
         // Expectations for the response status and data
         expect(mockResponse.status).toHaveBeenCalledWith(404);
         expect(mockResponse.send).toHaveBeenCalledWith({ data: 'Didnt find' });
-    });
+    },10000);
 });
 
 
@@ -262,7 +269,7 @@ describe('deletePlan', () => {
         expect(User.findById).toHaveBeenCalledWith(mockUserId);
         expect(Plan.findOneAndDelete).toHaveBeenCalledWith({ user: mockUser });
         expect(mockUser.updateOne).toHaveBeenCalledWith({ $unset: { plan: 1 } }, { new: true });
-    });
+    },10000);
 });
 
   

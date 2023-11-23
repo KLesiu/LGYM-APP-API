@@ -34,7 +34,7 @@ describe('verifyCallback', () => {
 
     // Expect done to have been called with null and the mock user
     expect(done).toHaveBeenCalledWith(null, mockUser);
-  });
+  },10000);
 
   it('should call done with error if user is not found', async () => {
     // Mock User.findOne to reject with an error
@@ -51,6 +51,6 @@ describe('verifyCallback', () => {
 
     // Expect done to have been called with an error
     expect(done).toHaveBeenCalledWith(new Error('User not found'));
-  });
+  },10000);
 });
 

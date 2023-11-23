@@ -13,7 +13,6 @@ exports.register=[
         const errors = validationResult(req)
         
         if(!errors.isEmpty()){
-            
             return res.status(404).send({
                 errors:errors.array()
             })
@@ -83,3 +82,5 @@ exports.setUserRank = async function(req,res,next){
     await User.findByIdAndUpdate(id,{rank:rank})
     return res.status(200).send({msg:'Updated'})
 }
+
+
