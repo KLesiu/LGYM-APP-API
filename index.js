@@ -34,7 +34,7 @@ app.use('/api',plan)
 app.use('/api',training)
 
 
-// Start listening
-app.listen(process.env.PORT,()=>console.log(`Server start at port ${process.env.PORT}`))
+module.exports = app
+
 
 
