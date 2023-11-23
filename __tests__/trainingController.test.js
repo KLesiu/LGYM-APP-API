@@ -1,4 +1,4 @@
-const {addTraining} = require('../controllers/trainingController')
+const {addTraining, getTrainingHistory} = require('../controllers/trainingController')
 const request = require('supertest');
 const app = require('../index');
 const server = require('../server')
@@ -39,6 +39,7 @@ describe('addTraining', () => {
         };
 
         // Mocking the necessary functions to resolve promises
+        
         jest.spyOn(User, 'findById').mockResolvedValueOnce(mockUser);
         jest.spyOn(Plan, 'findOne').mockResolvedValueOnce(mockPlan);
 
@@ -52,5 +53,57 @@ describe('addTraining', () => {
 
     
 });
+describe('getTrainingHistory',()=>{
+    it('should send training history',async()=>{
+        const mockUserId = 'mockUserId';
+        const mockUser = new User({ _id: mockUserId });
+        const mockTraining = new Training({user:mockUser,type:'A'})
+        const mockTrainingTwo = new Training({user:mockUser,type:'B'})
+         // Mocking the request object with user id
+         const mockRequest = {
+            params: { id: mockUserId },
+        }; 
+         // Mocking the response object
+         const mockResponse = {
+            status: jest.fn().mockReturnThis(),
+            send: jest.fn(),
+        };
+        // Mocking the necessary functions to resolve promises
+        jest.spyOn(Training,'create').mockResolvedValue(mockTraining)
+        jest.spyOn(Training,'create').mockResolvedValue(mockTrainingTwo)
+        jest.spyOn(User, 'findById').mockResolvedValueOnce(mockUser);
+        jest.spyOn(Training, 'find').mockResolvedValue([{user: mockUser }]);
+
+
+        // Calling the getTrainingHistory function
+        await getTrainingHistory(mockRequest,mockResponse)
+        expect(mockResponse.send).toHaveBeenCalledWith({ trainingHistory:[{user:mockUser}] });
+
+
+
+    })
+    it('should send message "You dont have trainings!"',async()=>{
+        const mockUserId = 'mockUserId';
+        const mockUser = new User({ _id: mockUserId });
+         // Mocking the request object with user id
+         const mockRequest = {
+            params: { id: mockUserId },
+        }; 
+         // Mocking the response object
+         const mockResponse = {
+            status: jest.fn().mockReturnThis(),
+            send: jest.fn(),
+        };
+        // Mocking the necessary functions to resolve promises
+        jest.spyOn(User, 'findById').mockResolvedValueOnce(mockUser);
+        jest.spyOn(Training, 'find').mockResolvedValue([]);
+
+
+        // Calling the getTrainingHistory function
+        await getTrainingHistory(mockRequest,mockResponse)
+        expect(mockResponse.send).toHaveBeenCalledWith({ msg:'You dont have trainings!' });
+
+    })
+})
 
 
