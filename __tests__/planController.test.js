@@ -78,7 +78,7 @@ describe('getPlanConfig', () => {
     }, 1000); // Set timeout for the test case to 1000ms
   
   });
-  describe('setPlan', () => {
+describe('setPlan', () => {
     it('should update plan with one day of exercises', async () => {
         // Mocking user and plan objects
         const mockUserId = 'mockUserId';
