@@ -90,3 +90,50 @@ describe('register', () => {
         await User.findOneAndDelete({email: 'existinguser@example.com'})
     },1000);
 },10000);
+
+describe('getUserInfo',()=>{
+    it('should send user info',async()=>{
+        const newUser = new User({ name: 'ExistingUser',email:'existinguser@gmail.com' });
+        await newUser.save();
+        // Mocking the request object with training details
+        const mockRequest = {
+        params: { id: 'mockId' },
+        };
+
+         // Mocking the response object
+        const mockResponse = {
+            status: jest.fn().mockReturnThis(),
+            send: jest.fn(),
+        };        
+        // Mocking the necessary functions to resolve promises
+        jest.spyOn(User, 'findById').mockResolvedValueOnce(newUser);
+
+        // Calling getUserInfo fn
+        await getUserInfo(mockRequest,mockResponse)
+        expect(mockResponse.status).toHaveBeenCalledWith(200);
+        expect(mockResponse.send).toHaveBeenCalledWith(newUser);
+        await User.findOneAndDelete({name: 'ExistingUser'})
+
+        },10000)
+    it('should send message "Didnt find"',async()=>{
+        // Mocking the request object with training details
+        const mockRequest = {
+        params: { id: 'xxxx' },
+        };
+
+         // Mocking the response object
+        const mockResponse = {
+            status: jest.fn().mockReturnThis(),
+            send: jest.fn(),
+        };        
+        // Mocking the necessary functions to resolve promises
+        jest.spyOn(User, 'findById').mockResolvedValueOnce(null);
+
+        // Calling getUserInfo fn
+        await getUserInfo(mockRequest,mockResponse)
+        expect(mockResponse.status).toHaveBeenCalledWith(404);
+        expect(mockResponse.send).toHaveBeenCalledWith("Didnt find");
+    })
+},10000)
+
+
