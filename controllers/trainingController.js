@@ -29,7 +29,7 @@ exports.getTrainingHistory=async(req,res)=>{
 }
 
 exports.getCurrentTrainingSession=async(req,res)=>{
-    const id = req.params.id
+    const id = req.params.id 
     const findTraining = await Training.findById(id)
     if(findTraining){
         return res.status(200).send({training:findTraining})
