@@ -87,3 +87,6 @@ exports.deletePlan=async(req,res)=>{
    if(deletedPlan) return res.status(200).send({msg: 'Deleted!'})
    else return res.stauts(404).send({msg:'Didnt find!'})
 }
+
+
+

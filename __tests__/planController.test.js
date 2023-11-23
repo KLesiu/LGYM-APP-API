@@ -14,6 +14,7 @@ afterAll(async()=>{
 afterAll(async () => {
     await mongoose.disconnect();
   });
+
 describe('setPlanConfig', () => {
     it('should set plan configuration for a user', async () => {
       // Mock request object with necessary data
@@ -78,6 +79,7 @@ describe('getPlanConfig', () => {
     }, 1000); // Set timeout for the test case to 1000ms
   
   });
+
 describe('setPlan', () => {
     it('should update plan with one day of exercises', async () => {
         // Mocking user and plan objects
@@ -144,6 +146,122 @@ describe('setPlan', () => {
 
         // Expectations for the response message
         expect(mockResponse.send).toHaveBeenCalledWith({ msg: 'Updated' });
+    });
+});
+
+describe('getPlan', () => {
+    it('should return the plan data when plan is found', async () => {
+        // Mocking user and plan objects
+        const mockUserId = 'mockUserId';
+        const mockUser = new User({ _id: mockUserId });
+        const mockPlan = new Plan({
+            user: mockUser,
+            planA: ['ExerciseA'],
+            planB: ['ExerciseB'],
+            // Include other plan data as needed
+        });
+
+        // Mocking the request object
+        const mockRequest = {
+            params: { id: mockUserId },
+        };
+
+        // Mocking the response object
+        const mockResponse = {
+            status: jest.fn(() => mockResponse),
+            send: jest.fn(),
+        };
+
+        // Mocking the necessary functions to resolve promises
+        jest.spyOn(User, 'findById').mockResolvedValueOnce(mockUser);
+        jest.spyOn(Plan, 'findOne').mockResolvedValueOnce(mockPlan);
+
+        // Calling the getPlan function
+        await getPlan(mockRequest, mockResponse);
+
+        // Expectations for the response status and data
+        expect(mockResponse.status).toHaveBeenCalledWith(200);
+        expect(mockResponse.send).toHaveBeenCalledWith({
+            data: {
+                planA: ['ExerciseA'],
+                planB: ['ExerciseB'],
+                planC:  [],
+                planD:  [],
+                planE:  [],
+                planF:  [],
+                planG:  [],
+            },
+        });
+    });
+
+    it('should return a 404 response when plan is not found', async () => {
+        // Mocking user object
+        const mockUserId = 'mockUserId';
+        const mockUser = new User({ _id: mockUserId });
+
+        // Mocking the request object
+        const mockRequest = {
+            params: { id: mockUserId },
+        };
+
+        // Mocking the response object
+        const mockResponse = {
+            status: jest.fn(() => mockResponse),
+            send: jest.fn(),
+        };
+
+        // Mocking the necessary functions to resolve promises
+        jest.spyOn(User, 'findById').mockResolvedValueOnce(mockUser);
+        jest.spyOn(Plan, 'findOne').mockResolvedValueOnce(null);
+
+        // Calling the getPlan function
+        await getPlan(mockRequest, mockResponse);
+
+        // Expectations for the response status and data
+        expect(mockResponse.status).toHaveBeenCalledWith(404);
+        expect(mockResponse.send).toHaveBeenCalledWith({ data: 'Didnt find' });
+    });
+});
+
+
+describe('deletePlan', () => {
+    it('should delete the plan and return a success message when plan is found', async () => {
+        // Mocking user object
+        const mockUserId = 'mockUserId';
+        const mockUser = new User({ _id: mockUserId });
+
+        // Mocking the request object
+        const mockRequest = {
+            params: { id: mockUserId },
+        };
+
+        // Mocking the response object
+        const mockResponse = {
+            status: jest.fn(() => mockResponse),
+            send: jest.fn(),
+        };
+
+        // Mocking the Plan.findOneAndDelete result
+        const mockDeletedPlan = {
+            // Include mock data as needed
+        };
+        jest.spyOn(User, 'findById').mockResolvedValueOnce(mockUser);
+        jest.spyOn(Plan, 'findOneAndDelete').mockResolvedValueOnce(mockDeletedPlan);
+
+        // Mocking the User.updateOne result
+        jest.spyOn(mockUser, 'updateOne').mockResolvedValueOnce();
+
+        // Calling the deletePlan function
+        await deletePlan(mockRequest, mockResponse);
+
+        // Expectations for the response status and data
+        expect(mockResponse.status).toHaveBeenCalledWith(200);
+        expect(mockResponse.send).toHaveBeenCalledWith({ msg: 'Deleted!' });
+
+        // Expectations for the function calls
+        expect(User.findById).toHaveBeenCalledWith(mockUserId);
+        expect(Plan.findOneAndDelete).toHaveBeenCalledWith({ user: mockUser });
+        expect(mockUser.updateOne).toHaveBeenCalledWith({ $unset: { plan: 1 } }, { new: true });
     });
 });
 
