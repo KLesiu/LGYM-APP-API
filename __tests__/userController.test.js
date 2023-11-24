@@ -1,19 +1,15 @@
 const request = require('supertest');
 const app = require('../testapp');
 const mongoose = require('mongoose')
-const Training = require('../models/Training')
-const Exercise = require('../models/Exercise')
 const User = require('../models/User');
-const Plan = require('../models/Plan');
-const {getUserInfo,register,login,setUserRank,setUserRecords} = require('../controllers/userController')
+const {getUserInfo} = require('../controllers/userController')
 
-let server; // Zmienna do przechowywania referencji do serwera
+let server; // Variable to contain server references
 
 beforeAll(() => {
     const port = 4001;
     server = app.listen(port);
 })
-
 
 // Close server connection
 afterEach(async()=>{
@@ -24,6 +20,7 @@ afterAll(async () => {
     await mongoose.disconnect();
   });
 
+  
 describe('register', () => {
     it('should register a new user with valid data', async () => {
         const response = await request(app)

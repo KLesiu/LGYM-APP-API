@@ -2,7 +2,6 @@ const User = require("../models/User")
 const Plan = require('../models/Plan')
 require("dotenv").config()
 
-
 exports.setPlanConfig=async(req,res,next)=>{
     const days = +req.body.days
     const name = req.body.name
@@ -19,7 +18,6 @@ exports.getPlanConfig=async(req,res,next)=>{
     const id = req.params.id
     const findUser = await User.findById(id)
     const findPlan = await Plan.findOne({user:findUser})
-    
     return res.send({count:findPlan.trainingDays})
 }
 

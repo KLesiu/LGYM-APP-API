@@ -1,7 +1,3 @@
-const request = require('supertest');
-const passport = require('passport');
-const express = require('express');
-const app = express();
 const User = require('../models/User')
 const {verifyCallback} = require('../config/passport')
 

@@ -1,13 +1,11 @@
 const {addTraining, getTrainingHistory, getPreviousTrainingSession, getCurrentTrainingSession,checkPreviousTrainingSession} = require('../controllers/trainingController')
-const request = require('supertest');
 const app = require('../testapp');
 const mongoose = require('mongoose')
 const Training = require('../models/Training')
-const Exercise = require('../models/Exercise')
 const User = require('../models/User');
 const Plan = require('../models/Plan');
 
-let server; // Zmienna do przechowywania referencji do serwera
+let server; // Variable to contain server references
 
 beforeAll(() => {
     const port = 4002

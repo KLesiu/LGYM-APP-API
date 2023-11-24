@@ -7,7 +7,7 @@ const app = require('../testapp');
 const mongoose = require('mongoose')
 
 
-let server; // Zmienna do przechowywania referencji do serwera
+let server; // Variable to contain server references
 
 beforeAll(() => {
     const port = 4000;
@@ -60,30 +60,30 @@ describe('setPlanConfig', () => {
   
   });
   
-// describe('getPlanConfig', () => {
-//     it('should get plan configuration for a user', async () => {
-//       // Mock user and plan objects for testing
-//       const mockUserId = 'mockUserId';
-//       const mockUser = new User({ _id: mockUserId });
-//       const mockPlan = new Plan({ user: mockUser, trainingDays: 5 });
+describe('getPlanConfig', () => {
+    it('should get plan configuration for a user', async () => {
+      // Mock user and plan objects for testing
+      const mockUserId = 'mockUserId';
+      const mockUser = new User({ _id: mockUserId });
+      const mockPlan = new Plan({ user: mockUser, trainingDays: 5 });
   
-//       // Mocking MongoDB operations using jest spies
-//       jest.spyOn(User, 'findById').mockResolvedValueOnce(mockUser);
-//       jest.spyOn(Plan, 'findOne').mockResolvedValueOnce(mockPlan);
+      // Mocking MongoDB operations using jest spies
+      jest.spyOn(User, 'findById').mockResolvedValueOnce(mockUser);
+      jest.spyOn(Plan, 'findOne').mockResolvedValueOnce(mockPlan);
   
-//       // Make an HTTP request to the getPlanConfig endpoint
-//       const response = await request(app).get(`/api/${mockUserId}/configPlan`);
+      // Make an HTTP request to the getPlanConfig endpoint
+      const response = await request(app).get(`/api/${mockUserId}/configPlan`);
   
-//       // Assertions to verify if the expected response was received
-//       expect(response.status).toBe(200);
-//       expect(response.body).toEqual({ count: mockPlan.trainingDays });
+      // Assertions to verify if the expected response was received
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({ count: mockPlan.trainingDays });
   
-//       // Assertions to verify if the expected MongoDB operations were called
-//       expect(User.findById).toHaveBeenCalledWith(mockUserId);
-//       expect(Plan.findOne).toHaveBeenCalledWith({ user: mockUser });
-//     }, 10000); // Set timeout for the test case to 1000ms
+      // Assertions to verify if the expected MongoDB operations were called
+      expect(User.findById).toHaveBeenCalledWith(mockUserId);
+      expect(Plan.findOne).toHaveBeenCalledWith({ user: mockUser });
+    }, 10000); // Set timeout for the test case to 1000ms
   
-//   });
+  });
 
 describe('setPlan', () => {
     it('should update plan with one day of exercises', async () => {
