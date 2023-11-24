@@ -14,12 +14,10 @@ beforeAll(() => {
     server = app.listen(port);
 });
 // Close server connection
-afterEach(async()=>{
-    await server.close()
-})
 // Close database connection
 afterAll(async () => {
     await mongoose.disconnect();
+    await server.close()
   });
 
 describe('setPlanConfig', () => {

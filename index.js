@@ -7,6 +7,7 @@ const auth = require("./routes/auth")
 const plan = require('./routes/plan')
 const training = require("./routes/training")
 
+
 // Mongoose connection
 mongoose.set("strictQuery",false)
 const mongoDB = process.env.MONGO_CONNECT
@@ -33,8 +34,8 @@ app.use('/api',auth)
 app.use('/api',plan)
 app.use('/api',training)
 
-
 module.exports = app
+
 
 
 
