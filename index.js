@@ -36,6 +36,8 @@ app.use('/api',training)
 
 module.exports = app
 
+const server = require('./server')
+server
 
 
 
