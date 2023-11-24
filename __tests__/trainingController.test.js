@@ -1,6 +1,6 @@
 const {addTraining, getTrainingHistory, getPreviousTrainingSession, getCurrentTrainingSession,checkPreviousTrainingSession} = require('../controllers/trainingController')
 const request = require('supertest');
-const app = require('../index');
+const app = require('../testapp');
 const mongoose = require('mongoose')
 const Training = require('../models/Training')
 const Exercise = require('../models/Exercise')
