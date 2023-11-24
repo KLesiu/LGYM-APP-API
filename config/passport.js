@@ -11,6 +11,7 @@ function verifyCallback(payload,done){
 }
 
 exports.passportConfig = ()=>{
+    passport.use(User.createStrategy())
     passport.use(new JWTStrategy({jwtFromRequest:ExtractJWT.fromAuthHeaderAsBearerToken(),secretOrKey:process.env.JWT_SECRET},verifyCallback))
 }
 exports.verifyCallback = verifyCallback
