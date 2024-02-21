@@ -21,7 +21,7 @@ exports.getPlanConfig=async(req,res,next)=>{
     return res.send({count:findPlan.trainingDays})
 }
 
-exports.setPlanShared=async(user,planConfig)=>{
+exports.setPlanShared=async(user,planConfig,res)=>{
     const currentPlan = await Plan.create({user:user,name:planConfig.name,trainingDays:planConfig.trainingDays})
     await user.updateOne({plan:currentPlan})
     const days = planConfig.days
@@ -124,7 +124,7 @@ exports.deletePlan=async(req,res)=>{
    else return res.stauts(404).send({msg:'Didnt find!'})
 }
 
-exports.getSharedPlan=async(req,res)=>{
+exports.getSharedPlan=async(req)=>{
     const user = await User.findById(req.params.id)
     const id = req.body.user_id
     const findUser = await User.findById(id)
