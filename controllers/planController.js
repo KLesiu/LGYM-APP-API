@@ -21,6 +21,44 @@ exports.getPlanConfig=async(req,res,next)=>{
     return res.send({count:findPlan.trainingDays})
 }
 
+exports.setPlanShared=async(user,planConfig)=>{
+    const currentPlan = await Plan.create({user:user,name:planConfig.name,trainingDays:planConfig.trainingDays})
+    await user.updateOne({plan:currentPlan})
+    const days = planConfig.days
+    const findPlan = await Plan.findOne({user:user})
+    if(planConfig.trainingDays === 1){
+        await findPlan.updateOne({planA:days[0].exercises})
+        return res.send({msg:'Updated'})
+    }
+    else if(planConfig.trainingDays === 2){
+        await findPlan.updateOne({planA:days[0].exercises,planB:days[1].exercises})
+        return res.send({msg:'Updated'})
+    }
+    else if(planConfig.trainingDays === 3){
+        await findPlan.updateOne({planA:days[0].exercises,planB:days[1].exercises,planC:days[2].exercises})
+        return res.send({msg:'Updated'})
+    }
+    else if(planConfig.trainingDays === 4){
+        await findPlan.updateOne({planA:days[0].exercises,planB:days[1].exercises,planC:days[2].exercises,planD:days[3].exercises})
+        return res.send({msg:'Updated'})
+    }
+    else if(planConfig.trainingDays === 5){
+        await findPlan.updateOne({planA:days[0].exercises,planB:days[1].exercises,planC:days[2].exercises,planD:days[3].exercises,planE:days[4].exercises})
+        return res.send({msg:'Updated'})
+    }
+    else if(planConfig.trainingDays === 6){
+        await findPlan.updateOne({planA:days[0].exercises,planB:days[1].exercises,planC:days[2].exercises,planD:days[3].exercises,planE:days[4].exercises,planF:days[5].exercises})
+        return res.send({msg:'Updated'})
+    }
+    else if(planConfig.trainingDays === 7){
+        await findPlan.updateOne({planA:days[0].exercises,planB:days[1].exercises,planC:days[2].exercises,planD:days[3].exercises,planE:days[4].exercises,planF:days[5].exercises,planG:days[6].exercises})
+        return res.send({msg:'Updated'})
+    }
+    else{
+        return res.send({msg:"Error, try again"})
+    }
+}
+
 exports.setPlan=async(req,res,next)=>{
     const id = req.params.id
     const findUser = await User.findById(id)
@@ -86,5 +124,26 @@ exports.deletePlan=async(req,res)=>{
    else return res.stauts(404).send({msg:'Didnt find!'})
 }
 
+exports.getSharedPlan=async(req,res)=>{
+    const user = await User.findById(req.params.id)
+    const id = req.body.user_id
+    const findUser = await User.findById(id)
+    const userPlan = await Plan.findOne({user:findUser})
+    const sharedPlan = {
+        name: userPlan.name,
+        days:[
+            {exercises:userPlan.planA},
+            {exercises:userPlan.planB},
+            {exercises:userPlan.planC},
+            {exercises:userPlan.planD},
+            {exercises:userPlan.planE},
+            {exercises:userPlan.planF},
+            {exercises:userPlan.planG},
 
+        ],
+        trainingDays:userPlan.trainingDays
+    }
+    this.setPlanShared(user,sharedPlan)
+
+}
 
