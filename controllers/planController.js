@@ -28,35 +28,32 @@ exports.setPlanShared=async(user,planConfig,res)=>{
     const findPlan = await Plan.findOne({user:user})
     if(planConfig.trainingDays === 1){
         await findPlan.updateOne({planA:days[0].exercises})
-        return res.send({msg:'Updated'})
+        
     }
     else if(planConfig.trainingDays === 2){
         await findPlan.updateOne({planA:days[0].exercises,planB:days[1].exercises})
-        return res.send({msg:'Updated'})
+
     }
     else if(planConfig.trainingDays === 3){
         await findPlan.updateOne({planA:days[0].exercises,planB:days[1].exercises,planC:days[2].exercises})
-        return res.send({msg:'Updated'})
     }
     else if(planConfig.trainingDays === 4){
         await findPlan.updateOne({planA:days[0].exercises,planB:days[1].exercises,planC:days[2].exercises,planD:days[3].exercises})
-        return res.send({msg:'Updated'})
+
     }
     else if(planConfig.trainingDays === 5){
         await findPlan.updateOne({planA:days[0].exercises,planB:days[1].exercises,planC:days[2].exercises,planD:days[3].exercises,planE:days[4].exercises})
-        return res.send({msg:'Updated'})
+
     }
     else if(planConfig.trainingDays === 6){
         await findPlan.updateOne({planA:days[0].exercises,planB:days[1].exercises,planC:days[2].exercises,planD:days[3].exercises,planE:days[4].exercises,planF:days[5].exercises})
-        return res.send({msg:'Updated'})
+
     }
     else if(planConfig.trainingDays === 7){
         await findPlan.updateOne({planA:days[0].exercises,planB:days[1].exercises,planC:days[2].exercises,planD:days[3].exercises,planE:days[4].exercises,planF:days[5].exercises,planG:days[6].exercises})
-        return res.send({msg:'Updated'})
+
     }
-    else{
-        return res.send({msg:"Error, try again"})
-    }
+
 }
 
 exports.setPlan=async(req,res,next)=>{
@@ -126,7 +123,7 @@ exports.deletePlan=async(req,res)=>{
 
 exports.getSharedPlan=async(req)=>{
     const user = await User.findById(req.params.id)
-    const id = req.body.user_id
+    const id = req.body.userId
     const findUser = await User.findById(id)
     const userPlan = await Plan.findOne({user:findUser})
     const sharedPlan = {
